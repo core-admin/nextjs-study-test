@@ -1,3 +1,1 @@
-## 文章推荐
-
-- [Next.js 路由篇](https://www.cnblogs.com/silva/p/17948724)
+[多个根布局自定义不同的 404 页面](https://juejin.cn/post/7351321244125265930)
