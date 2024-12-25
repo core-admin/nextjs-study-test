@@ -12,16 +12,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
-}: Readonly<{
+}: // modal,
+Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
+  // modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body className={clsx(inter.className, 'min-h-screen')}>
         {children}
-        {modal}
+        {/* {modal} */}
       </body>
     </html>
   );

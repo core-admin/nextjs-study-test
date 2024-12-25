@@ -1,7 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
-
-import { getDocumentById } from '@/app/actions';
-import { DocumentDetail } from '@/components/document-detail';
+import { Item } from '@/components/item';
+import { items } from '@/data';
+import { AnimatePresence } from 'motion/react';
 
 interface DocumentPageDetailProps {
   params: {
@@ -9,16 +8,20 @@ interface DocumentPageDetailProps {
   };
 }
 
-export default async function DocumentPageDetail({ params }: DocumentPageDetailProps) {
-  const document = await getDocumentById(params.id);
+export default function DocumentPageDetail({ params }: DocumentPageDetailProps) {
+  const document = items.find(item => item.id === params.id);
 
   if (!document) {
     return (
-      <div className="h-screen flex items-center justify-center p-4 text-2xl text-center">
+      <div className="h-screen flex items-center justify-center p-4 text-2xl text-center text-white">
         Document not found
       </div>
     );
   }
 
-  return <DocumentDetail className="h-screen" document={document} />;
+  return (
+    <AnimatePresence>
+      <Item id={document.id} />
+    </AnimatePresence>
+  );
 }
