@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { getDocuments } from '@/app/actions';
-import Link from 'next/link';
 
-export default async function Page() {
+import Link from 'next/link';
+import { getDocuments } from '@/app/actions';
+
+export default async function DocumentPage() {
   const documents = await getDocuments();
   return (
     <ul
@@ -19,7 +20,7 @@ export default async function Page() {
             />
             <Link
               className="absolute inset-0 focus:outline-none"
-              href={`./document/${document.id}`}
+              href={`./documents/${document.id}`}
             >
               <span className="sr-only">View details for {document.title}</span>
             </Link>
