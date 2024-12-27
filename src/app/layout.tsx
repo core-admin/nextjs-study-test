@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import clsx from 'clsx';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,7 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={clsx(inter.className, 'min-h-screen')}>{children}</body>
+      <body className={clsx(inter.className, 'min-h-screen')}>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }
