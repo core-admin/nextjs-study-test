@@ -25,17 +25,24 @@ const initialState: ThemeProviderState = {
 export const ThemeContext = createContext<ThemeProviderState>(initialState);
 
 function updateRootElementTheme(theme: Theme) {
-  // const classList = window.document.documentElement.classList;
-  // classList.toggle('dark', theme === 'dark');
+  const classList = window.document.documentElement.classList;
+  classList.toggle('dark', theme === 'dark');
 }
 
 const getTheme = (key: string, fallback?: string) => {
-  if (isServer) return undefined;
+  if (isServer) return fallback ?? undefined;
   let theme;
   try {
-    theme = localStorage.getItem(key) || undefined;
-  } catch (e) {}
+    theme = localStorage.getItem(key) || fallback;
+  } catch (e) {
+    console.error('Failed to get theme from localStorage:', e);
+    theme = fallback;
+  }
   return theme || fallback;
+};
+
+const isValidTheme = (theme: any): theme is Theme => {
+  return ['dark', 'light', 'system'].includes(theme);
 };
 
 export function ThemeProvider({
@@ -44,11 +51,11 @@ export function ThemeProvider({
   storageKey = 'theme',
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
-    console.log('getTheme >>>', getTheme(storageKey, defaultTheme));
-    return getTheme(storageKey, defaultTheme) as Theme;
+    const savedTheme = getTheme(storageKey, defaultTheme);
+    return isValidTheme(savedTheme) ? savedTheme : defaultTheme;
   });
 
-  console.log('theme 1111111 >>>', theme);
+  console.log('getTheme2', theme);
 
   useEffect(() => {
     /**
@@ -73,7 +80,6 @@ export function ThemeProvider({
     };
 
     darkThemeMq.addEventListener('change', listener);
-
     return () => darkThemeMq.removeEventListener('change', listener);
   }, [theme]);
 
