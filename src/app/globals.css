@@ -107,6 +107,9 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --font-fallback: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      'Helvetica Neue', Arial, sans-serif;
   }
 
   .dark {
@@ -199,5 +202,18 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-lxgw-wen-kai-regular, var(--font-inter, var(--font-fallback)));
+    /* font-family: var(--font-inter, var(--font-lxgw-wen-kai-regular, var(--font-fallback))); */
+    font-weight: 400;
+    font-style: normal;
   }
+}
+
+@layer utilities {
+  /* .text-en {
+    font-family: var(--font-inter, var(--font-fallback));
+  }
+  .text-cn {
+    font-family: var(--font-lxgw-wen-kai-regular, var(--font-fallback));
+  } */
 }
