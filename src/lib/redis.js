@@ -15,8 +15,27 @@ export async function getAllNotes() {
   const data = await redis.hgetall('notes');
   if (Object.keys(data).length == 0) {
     await redis.hset('notes', initialData);
+    const res = await redis.hgetall('notes');
+    return Object.entries(res).map(([uuid, noteStr]) => ({
+      uuid: parseInt(uuid),
+      ...JSON.parse(noteStr),
+    }));
   }
-  return await redis.hgetall('notes');
+
+  // 将数据转换为对象数组并解析 JSON
+  const notes = Object.entries(data).map(([uuid, noteStr]) => ({
+    uuid: parseInt(uuid),
+    ...JSON.parse(noteStr),
+  }));
+
+  // 先按创建时间 (uuid) 降序，再按更新时间降序排序
+  notes.sort((a, b) => {
+    const updateTimeA = a.updateTime ? new Date(a.updateTime).getTime() : a.uuid;
+    const updateTimeB = b.updateTime ? new Date(b.updateTime).getTime() : b.uuid;
+    return updateTimeB - updateTimeA;
+  });
+
+  return notes;
 }
 
 export async function addNote(data) {

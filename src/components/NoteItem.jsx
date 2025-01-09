@@ -9,7 +9,7 @@ export default function NoteItem({ noteId, note }) {
       id={noteId}
       title={title}
       expandedChildren={
-        <p className="sidebar-note-excerpt">{content.substring(0, 20) || <i>(No content)</i>}</p>
+        <p className="sidebar-note-excerpt">{content?.substring(0, 20) || <i>(No content)</i>}</p>
       }
     >
       <NoteItemHeader title={title} updateTime={updateTime} />
