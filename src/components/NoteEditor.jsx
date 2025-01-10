@@ -1,54 +1,44 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useActionState, useEffect } from 'react';
 import NotePreview from '@/components/NotePreview';
-import { useFormStatus } from 'react-dom';
 import { saveNote, deleteNote } from '@/app/actions';
+import SaveButton from '@/components/SaveButton';
+import DeleteButton from '@/components/DeleteButton';
+
+const initialState = {
+  message: null,
+  errors: null,
+};
 
 export default function NoteEditor({ noteId, initialTitle, initialBody }) {
-  const { pending } = useFormStatus();
+  const [saveState, saveFormAction] = useActionState(saveNote, initialState);
+  const [, delFormAction] = useActionState(deleteNote);
+
   const [title, setTitle] = useState(initialTitle);
   const [body, setBody] = useState(initialBody);
+
   const isDraft = !noteId;
 
-  console.log('pending >>>', pending);
+  useEffect(() => {
+    if (saveState.errors) {
+      // 处理错误
+      console.error(saveState.errors);
+    }
+  }, [saveState]);
 
   return (
     <div className="note-editor">
       <form className="note-editor-form" autoComplete="off">
         <div className="note-editor-menu" role="menubar">
           <input type="hidden" name="noteId" value={noteId} />
-          <button
-            className="note-editor-done"
-            style={{
-              cursor: pending ? 'not-allowed' : 'pointer',
-            }}
-            disabled={pending}
-            type="submit"
-            role="menuitem"
-            formAction={saveNote}
-            // formAction={() => saveNote(noteId, title, body)}
-          >
-            <img src="/checkmark.svg" width="14px" height="10px" alt="" role="presentation" />
-            保存
-          </button>
-          {!isDraft && (
-            <button
-              className="note-editor-delete"
-              style={{
-                cursor: pending ? 'not-allowed' : 'pointer',
-              }}
-              disabled={pending}
-              role="menuitem"
-              // formAction={() => deleteNote(noteId)}
-              formAction={deleteNote}
-            >
-              <img src="/cross.svg" width="10px" height="10px" alt="" role="presentation" />
-              删除
-            </button>
-          )}
+          <SaveButton formAction={saveFormAction} />
+          <DeleteButton isDraft={isDraft} formAction={delFormAction} />
         </div>
-
+        <div className="note-editor-menu">
+          {!!saveState?.message && `提示信息：${saveState.message}`}
+          {!!saveState.errors && `错误信息：${saveState.errors[0].message}`}
+        </div>
         <label className="offscreen" htmlFor="note-title-input">
           输入笔记的标题
         </label>

@@ -1,7 +1,6 @@
 import Note from '@/components/Note';
 import { getNote } from '@/lib/redis';
-
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+import { sleep } from '@/lib/utils';
 
 export default async function Page({ params }) {
   const { id: noteId } = await params;
