@@ -1,6 +1,7 @@
-import NoteItem from './NoteItem';
 import { getAllNotes } from '@/lib/redis';
 import { sleep } from '@/lib/utils';
+import NoteListFilter from './NoteListFilter';
+import NoteItemHeader from './NoteItemHeader';
 
 export default async function SidebarNoteList() {
   await sleep(2000);
@@ -11,14 +12,14 @@ export default async function SidebarNoteList() {
   }
 
   return (
-    <ul className="notes-list">
-      {notes.map(note => {
-        return (
-          <li key={note.uuid}>
-            <NoteItem noteId={note.uuid} note={note} />
-          </li>
-        );
+    <NoteListFilter
+      notes={notes.map(note => {
+        return {
+          noteId: note.uuid,
+          note,
+          header: <NoteItemHeader title={note.title} updateTime={note.updateTime} />,
+        };
       })}
-    </ul>
+    />
   );
 }

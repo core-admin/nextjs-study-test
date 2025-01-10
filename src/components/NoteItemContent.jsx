@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useRef, useEffect, useTransition } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useParams, useSearchParams } from 'next/navigation';
 
 export default function NoteItemContent({ id, title, expandedChildren, children }) {
   const router = useRouter();
   const { id: urlId } = useParams();
+  const searchParams = useSearchParams();
 
   const [isPending] = useTransition();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -23,6 +24,15 @@ export default function NoteItemContent({ id, title, expandedChildren, children 
     }
   }, [title]);
 
+  const onClick = () => {
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    if (sidebarToggle) {
+      sidebarToggle.checked = true;
+    }
+    !isActive &&
+      router.push(`/note/${id}${searchParams.size ? `?${searchParams.toString()}` : ''}`);
+  };
+
   return (
     <div
       ref={itemRef}
@@ -39,13 +49,7 @@ export default function NoteItemContent({ id, title, expandedChildren, children 
           backgroundColor: isPending ? 'var(--gray-80)' : isActive ? 'var(--tertiary-blue)' : '',
           border: isActive ? '1px solid var(--primary-border)' : '1px solid transparent',
         }}
-        onClick={() => {
-          const sidebarToggle = document.getElementById('sidebar-toggle');
-          if (sidebarToggle) {
-            sidebarToggle.checked = true;
-          }
-          !isActive && router.push(`/note/${id}`);
-        }}
+        onClick={onClick}
       >
         打开笔记进行预览
       </button>
