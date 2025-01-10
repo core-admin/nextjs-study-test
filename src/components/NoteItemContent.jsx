@@ -2,8 +2,10 @@
 
 import { useState, useRef, useEffect, useTransition } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
+import { useTranslation } from '@/i18n/client';
 
-export default function NoteItemContent({ id, title, expandedChildren, children }) {
+export default function NoteItemContent({ id, title, expandedChildren, children, lng }) {
+  const { t } = useTranslation(lng, 'note');
   const router = useRouter();
   const { id: urlId } = useParams();
   const searchParams = useSearchParams();
@@ -49,9 +51,10 @@ export default function NoteItemContent({ id, title, expandedChildren, children 
           backgroundColor: isPending ? 'var(--gray-80)' : isActive ? 'var(--tertiary-blue)' : '',
           border: isActive ? '1px solid var(--primary-border)' : '1px solid transparent',
         }}
+        title={t('preview')}
         onClick={onClick}
       >
-        打开笔记进行预览
+        {t('preview')}
       </button>
       <button
         className="sidebar-note-toggle-expand"

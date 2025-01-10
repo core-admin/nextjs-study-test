@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import { useTransition } from 'react';
+import { useTranslation } from '@/i18n/client';
 
 function Spinner({ active = true }) {
   return (
@@ -13,7 +14,8 @@ function Spinner({ active = true }) {
   );
 }
 
-export default function SidebarSearchField() {
+export default function SidebarSearchField({ lng }) {
+  const { t } = useTranslation(lng, 'note');
   const { replace } = useRouter();
   const pathname = usePathname();
 
@@ -35,11 +37,11 @@ export default function SidebarSearchField() {
   return (
     <div className="search" role="search">
       <label className="offscreen" htmlFor="sidebar-search-input">
-        搜索笔记
+        {t('search')}
       </label>
       <input
         id="sidebar-search-input"
-        placeholder="Search"
+        placeholder={t('search')}
         type="text"
         onChange={e => handleSearch(e.target.value)}
         onKeyDown={e => {

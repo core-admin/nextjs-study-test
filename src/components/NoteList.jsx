@@ -2,17 +2,20 @@ import { getAllNotes } from '@/lib/redis';
 import { sleep } from '@/lib/utils';
 import NoteListFilter from './NoteListFilter';
 import NoteItemHeader from './NoteItemHeader';
+import { useTranslation } from '@/i18n';
 
-export default async function SidebarNoteList() {
+export default async function SidebarNoteList({ lng }) {
+  const { t } = await useTranslation(lng, 'note');
   await sleep(2000);
   const notes = await getAllNotes();
 
   if (!notes.length) {
-    return <div className="notes-empty">{'尚未创建任何笔记'}</div>;
+    return <div className="notes-empty">{t('empty')}</div>;
   }
 
   return (
     <NoteListFilter
+      lng={lng}
       notes={notes.map(note => {
         return {
           noteId: note.uuid,

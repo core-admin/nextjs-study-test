@@ -1,0 +1,17 @@
+{
+  "new": "新建",
+  "search": "搜索笔记",
+  "empty": "尚未创建任何笔记",
+  "preview": "打开笔记进行预览",
+  "previewLabel": "预览",
+  "edit": "编辑",
+  "delete": "删除",
+  "deletePending": "删除中...",
+  "save": "保存",
+  "savePending": "保存中...",
+  "saveDone": "完成",
+  "titleLabel": "输入笔记的标题",
+  "bodyLabel": "输入笔记正文",
+  "updateTimeLabel": "最后更新于",
+  "emptyPreview": "点击左侧笔记来查看内容! 🥺"
+}

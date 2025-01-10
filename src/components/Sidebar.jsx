@@ -4,8 +4,11 @@ import NoteList from './NoteList';
 import EditButton from './EditButton';
 import NoteListSkeleton from './NoteListSkeleton';
 import SidebarSearchField from './SidebarSearchField';
+import { useTranslation } from '@/i18n';
 
-export default async function Sidebar() {
+export default async function Sidebar({ lng }) {
+  const { t: tBasic } = await useTranslation(lng, 'basic');
+  const { t: tNote } = await useTranslation(lng, 'note');
   return (
     <>
       <section className="col sidebar">
@@ -19,16 +22,16 @@ export default async function Sidebar() {
               alt=""
               role="presentation"
             />
-            <strong>笔记📒</strong>
+            <strong>{tBasic('title')}</strong>
           </section>
         </Link>
         <section className="sidebar-menu" role="menubar">
-          <SidebarSearchField />
-          <EditButton noteId={null}>新建</EditButton>
+          <SidebarSearchField lng={lng} />
+          <EditButton noteId={null}>{tNote('new')}</EditButton>
         </section>
         <nav>
           <Suspense fallback={<NoteListSkeleton />}>
-            <NoteList />
+            <NoteList lng={lng} />
           </Suspense>
         </nav>
       </section>

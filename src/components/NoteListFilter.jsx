@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import NoteItemContent from './NoteItemContent';
 
-export default function NoteListFilter({ notes }) {
+export default function NoteListFilter({ notes, lng }) {
   const searchParams = useSearchParams();
   const searchText = searchParams.get('q');
 
@@ -22,6 +22,7 @@ export default function NoteListFilter({ notes }) {
           <li key={noteId}>
             <NoteItemContent
               id={noteId}
+              lng={lng}
               title={note.title}
               expandedChildren={
                 <p className="sidebar-note-excerpt">

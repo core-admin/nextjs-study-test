@@ -1,0 +1,17 @@
+{
+  "new": "New",
+  "search": "Search notes",
+  "empty": "No notes created yet",
+  "preview": "Open note to preview",
+  "previewLabel": "Preview",
+  "edit": "Edit",
+  "delete": "Delete",
+  "deletePending": "Deleting...",
+  "save": "Save",
+  "savePending": "Saving...",
+  "saveDone": "Done",
+  "titleLabel": "Enter note title",
+  "bodyLabel": "Enter note content",
+  "updateTimeLabel": "Last updated at",
+  "emptyPreview": "Click a note on the left to view something! 🥺"
+}
