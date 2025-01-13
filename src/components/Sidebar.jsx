@@ -4,6 +4,8 @@ import NoteList from './NoteList';
 import EditButton from './EditButton';
 import NoteListSkeleton from './NoteListSkeleton';
 import SidebarSearchField from './SidebarSearchField';
+import SidebarImportApi from './SidebarImportApi';
+import SidebarImportServerAction from './SidebarImportServerAction';
 
 export default async function Sidebar() {
   return (
@@ -31,6 +33,18 @@ export default async function Sidebar() {
             <NoteList />
           </Suspense>
         </nav>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            paddingBottom: '16px',
+          }}
+        >
+          <SidebarImportApi />
+          <SidebarImportServerAction />
+        </div>
       </section>
     </>
   );

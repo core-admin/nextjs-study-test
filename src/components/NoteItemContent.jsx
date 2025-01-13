@@ -11,7 +11,7 @@ export default function NoteItemContent({ id, title, expandedChildren, children 
   const [isPending] = useTransition();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const isActive = id === urlId;
+  const isActive = id == urlId;
 
   // Animate after title is edited.
   const itemRef = useRef(null);

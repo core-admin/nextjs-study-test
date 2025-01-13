@@ -5,6 +5,10 @@ import { addNote, updateNote, delNote } from '@/lib/redis';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { sleep } from '@/lib/utils';
+import { stat, mkdir, writeFile } from 'fs/promises';
+import { join } from 'path';
+import mime from 'mime';
+import dayjs from 'dayjs';
 
 /*
 
@@ -108,4 +112,58 @@ export async function deleteNote(prevState, formData) {
   const noteId = formData.get('noteId');
   delNote(noteId);
   redirect('/');
+}
+
+export async function importNote(formData) {
+  const file = formData.get('file');
+
+  if (!file) {
+    return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
+  }
+
+  const relativeUploadDir = join('uploads', `${dayjs().format('YYYY-MM-DD')}`);
+  const uploadDir = join(process.cwd(), 'public', relativeUploadDir);
+
+  try {
+    // 检查目录是否存在
+    await stat(uploadDir);
+  } catch (e) {
+    if (e.code === 'ENOENT') {
+      // 如果目录不存在，创建它
+      await mkdir(uploadDir, { recursive: true });
+    } else {
+      return NextResponse.json({ error: 'Failed to create upload directory' }, { status: 500 });
+    }
+  }
+
+  const fileBuffer = Buffer.from(await file.arrayBuffer());
+
+  try {
+    const uniqueSuffix = `${Math.random().toString(36).slice(-6)}`;
+    const filename = file.name.replace(/\.[^/.]+$/, '');
+    const uniqueFilename = `${filename}-${uniqueSuffix}.${mime.getExtension(file.type)}`;
+
+    await writeFile(`${uploadDir}/${uniqueFilename}`, fileBuffer);
+
+    const res = await addNote(
+      JSON.stringify({
+        // 笔记标题
+        title: filename,
+        // 笔记内容
+        content: fileBuffer.toString('utf-8'),
+      }),
+    );
+    /**
+     * 清除缓存，同时清除客户端缓存
+     */
+    revalidatePath('/', 'layout');
+
+    return {
+      fileUrl: `/${relativeUploadDir}/${uniqueFilename}`,
+      uid: res,
+    };
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
+  }
 }
