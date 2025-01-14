@@ -69,7 +69,7 @@ export async function deleteNote(formData) {
 const schema = z.object({
   // 注意 只有 z.string() 时，空字符串是匹配规则的。
   title: z.string().min(1, '请填写标题').max(30, '标题最多 30 个字符'),
-  content: z.string().min(1, '请填写内容').max(100, '字数最多 100'),
+  content: z.string().min(1, '请填写内容'),
 });
 
 export async function saveNote(prevState, formData) {
@@ -89,8 +89,6 @@ export async function saveNote(prevState, formData) {
     };
   }
 
-  await sleep(1000);
-
   const noteId = formData.get('noteId');
 
   if (noteId) {
@@ -109,7 +107,6 @@ export async function saveNote(prevState, formData) {
 }
 
 export async function deleteNote(prevState, formData) {
-  await sleep(1000);
   const noteId = formData.get('noteId');
   delNote(noteId);
   redirect('/');

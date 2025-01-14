@@ -7,8 +7,6 @@ export default async function Page({ params }) {
   const { id: noteId } = await params;
   const note = await getNote(noteId);
 
-  await sleep(1000);
-
   if (note == null) {
     return (
       <div className="note--empty-state">

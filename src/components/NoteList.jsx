@@ -1,11 +1,9 @@
 // import { getAllNotes } from '@/lib/redis';
 import { getAllNotes } from '@/lib/prisma';
-import { sleep } from '@/lib/utils';
 import NoteListFilter from './NoteListFilter';
 import NoteItemHeader from './NoteItemHeader';
 
 export default async function SidebarNoteList() {
-  await sleep(2000);
   const notes = await getAllNotes();
 
   if (!notes.length) {

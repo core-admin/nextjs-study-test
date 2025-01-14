@@ -1,13 +1,10 @@
 import NoteEditor from '@/components/NoteEditor';
 // import { getNote } from '@/lib/redis';
 import { getNote } from '@/lib/prisma';
-import { sleep } from '@/lib/utils';
 
 export default async function EditPage({ params }) {
   const { id: noteId } = await params;
   const note = await getNote(noteId);
-
-  await sleep(1000);
 
   if (note === null) {
     return (
