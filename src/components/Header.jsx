@@ -20,8 +20,8 @@ function SignOut(props = {}) {
       action={async () => {
         'use server';
         await signOut({
-          redirectTo: '/',
-          redirect: true,
+          // redirectTo: '/',
+          // redirect: true,
         });
       }}
     >
