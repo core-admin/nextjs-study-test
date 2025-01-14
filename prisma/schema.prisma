@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  username String
+  password String
+  notes    Note[]
+
+  @@map("user")
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  title     String   @db.VarChar(255)
+  content   String?  @db.Text // 添加 @db.Text 来支持长文本
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+
+  @@map("note")
+}

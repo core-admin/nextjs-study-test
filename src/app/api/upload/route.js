@@ -4,7 +4,8 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import mime from 'mime';
 import dayjs from 'dayjs';
-import { addNote } from '@/lib/redis';
+// import { addNote } from '@/lib/redis';
+import { addNote } from '@/lib/prisma';
 
 export async function POST(req) {
   const formData = await req.formData();

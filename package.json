@@ -6,9 +6,18 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:pull": "prisma db pull",
+    "db:push": "prisma db push",
+    "db:gen": "prisma generate",
+    "db:migrate:dev": "prisma migrate dev",
+    "------------- 生成迁移文件而不立即执行 SQL 语句进行迁移更新 -------------": "",
+    "db:migrate:lazy": "prisma migrate dev --create-only",
+    "db:migrate:prod": "prisma migrate deploy",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "^6.2.1",
     "dayjs": "^1.11.13",
     "ioredis": "^5.4.2",
     "marked": "^15.0.6",
@@ -16,6 +25,7 @@
     "next": "15.1.4",
     "next-auth": "5.0.0-beta.25",
     "postcss": "^8.4.49",
+    "prisma": "^6.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sanitize-html": "^2.14.0",

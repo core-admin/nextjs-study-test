@@ -1,40 +1,29 @@
-'use client';
+import { use } from 'react';
+import { action } from './action';
 
-import { use, useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-
-export function ServerActionSignIn({ searchParams }) {
+/**
+ * 使用 Server Action 提交数据 + 显示错误信息
+ */
+export default function ServerActionSignIn({ searchParams }) {
   const data = use(searchParams);
-  const { callbackUrl } = data;
-  const [error, setError] = useState(null);
-  const router = useRouter();
+  const { callbackUrl, error } = data;
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    try {
-      const result = await signIn('credentials', {
-        username: formData.get('username'),
-        password: formData.get('password'),
-        redirect: false,
-      });
-      if (result.error) {
-        console.error('result 111 >>>', result);
-        setError(result.error);
-        return;
-      }
-      router.replace(callbackUrl || '/');
-      router.refresh();
-    } catch (error) {
-      console.error('error 222 >>>', error);
-      setError(result.error ?? error.cause?.err?.message ?? error.message);
-    }
-  };
+  console.log('searchParams >>>', data);
 
   return (
     <form
-      onSubmit={handleSubmit}
+      /**
+       * 使用 action 地址的形式，当 authorize 未通过，比如密码不对，页面直接刷新了，体验不好。
+       */
+      // action="/api/auth/callback/credentials"
+
+      action={action}
+      // onSubmit={e => {
+      //   e.preventDefault();
+      //   startTransition(() => {
+      //     action(e.target);
+      //   });
+      // }}
       style={{
         position: 'fixed',
         left: 0,
@@ -49,6 +38,7 @@ export function ServerActionSignIn({ searchParams }) {
       }}
     >
       <div>
+        <input type="hidden" name="callbackUrl" value={callbackUrl} />
         <div
           style={{
             display: 'flex',
@@ -135,5 +125,3 @@ export function ServerActionSignIn({ searchParams }) {
     </form>
   );
 }
-
-export default ServerActionSignIn;

@@ -1,5 +1,6 @@
 import NoteEditor from '@/components/NoteEditor';
-import { getNote } from '@/lib/redis';
+// import { getNote } from '@/lib/redis';
+import { getNote } from '@/lib/prisma';
 import { sleep } from '@/lib/utils';
 
 export default async function EditPage({ params }) {

@@ -1,40 +1,41 @@
 'use client';
 
-import { use, useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState, use } from 'react';
 
-export function ServerActionSignIn({ searchParams }) {
+export default function SignIn({ searchParams }) {
+  const [csrfToken, setCsrfToken] = useState('');
+
+  useEffect(() => {
+    const initToken = async () => {
+      /**
+       * /api/auth/csrf 请求用于 CSRF 保护机制
+       *
+       * Next.js 的 Server Actions 已经内置了 CSRF 保护机制
+       * 它使用了特殊的请求头和令牌来验证请求的合法性
+       *
+       * /api/auth/csrf 这个端点的作用是：
+       *  1.主要用于传统的表单提交方式（如使用 form 的 action URL）
+       *  2.当你配置表单 action 为 /api/auth/callback/credentials 时需要
+       * 3.提供 CSRF token 来防止跨站请求伪造攻击
+       *
+       * Server Actions 使用了更现代的安全机制，不需要手动处理 CSRF 保护。
+       */
+      const response = await fetch('http://localhost:3000/api/auth/csrf');
+      const { csrfToken } = await response.json();
+      setCsrfToken(csrfToken);
+    };
+    initToken();
+  }, []);
+
   const data = use(searchParams);
   const { callbackUrl } = data;
-  const [error, setError] = useState(null);
-  const router = useRouter();
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    try {
-      const result = await signIn('credentials', {
-        username: formData.get('username'),
-        password: formData.get('password'),
-        redirect: false,
-      });
-      if (result.error) {
-        console.error('result 111 >>>', result);
-        setError(result.error);
-        return;
-      }
-      router.replace(callbackUrl || '/');
-      router.refresh();
-    } catch (error) {
-      console.error('error 222 >>>', error);
-      setError(result.error ?? error.cause?.err?.message ?? error.message);
-    }
-  };
+  console.log('searchParams >>>', data);
 
   return (
     <form
-      onSubmit={handleSubmit}
+      action="/api/auth/callback/credentials"
+      method="POST"
       style={{
         position: 'fixed',
         left: 0,
@@ -49,6 +50,8 @@ export function ServerActionSignIn({ searchParams }) {
       }}
     >
       <div>
+        <input type="hidden" name="csrfToken" value={csrfToken} />
+        <input type="hidden" name="callbackUrl" value={callbackUrl} />
         <div
           style={{
             display: 'flex',
@@ -96,19 +99,6 @@ export function ServerActionSignIn({ searchParams }) {
             }}
           />
         </div>
-
-        {!!error && (
-          <div
-            style={{
-              paddingLeft: '100px',
-              marginTop: '8px',
-              color: 'red',
-            }}
-          >
-            {error}
-          </div>
-        )}
-
         <div
           style={{
             paddingLeft: '100px',
@@ -135,5 +125,3 @@ export function ServerActionSignIn({ searchParams }) {
     </form>
   );
 }
-
-export default ServerActionSignIn;

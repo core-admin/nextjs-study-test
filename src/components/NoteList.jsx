@@ -1,4 +1,5 @@
-import { getAllNotes } from '@/lib/redis';
+// import { getAllNotes } from '@/lib/redis';
+import { getAllNotes } from '@/lib/prisma';
 import { sleep } from '@/lib/utils';
 import NoteListFilter from './NoteListFilter';
 import NoteItemHeader from './NoteItemHeader';

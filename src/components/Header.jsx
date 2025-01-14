@@ -1,7 +1,7 @@
 import { signIn, signOut, auth } from '@/auth';
 import Link from 'next/link';
 
-function SignIn() {
+function GithubSignIn() {
   return (
     <form
       action={async () => {
@@ -11,6 +11,32 @@ function SignIn() {
     >
       <button type="submit">使用 GitHub 登录</button>
     </form>
+  );
+}
+
+/**
+ * 原意是点击按钮跳转到账号密码登录页面
+ * 如果 使用 server action signIn方法，会导致 CredentialsProvider 中的配置函数 authorize执行
+ * 从而导致问题。
+ *
+ * 此处我们直接跳转到登录页面即可。
+ */
+function CredentialsSignIn() {
+  return (
+    // <form
+    //   action={async () => {
+    //     'use server';
+    //     await signIn('credentials', {
+    //       redirect: true,
+    //     });
+    //   }}
+    // >
+    //   <button type="submit">使用 用户名/密码 登录</button>
+    // </form>
+
+    <Link href="/auth/signin">
+      <button>使用 用户名/密码 登录</button>
+    </Link>
   );
 }
 
@@ -51,7 +77,10 @@ export default async function Header() {
           <SignOut />
         </>
       ) : (
-        <SignIn />
+        <div style={{ display: 'flex', gap: '16px' }}>
+          <GithubSignIn />
+          <CredentialsSignIn />
+        </div>
       )}
     </header>
   );
