@@ -15,7 +15,7 @@
     "db:migrate:lazy": "prisma migrate dev --create-only",
     "db:migrate:prod": "prisma migrate deploy",
     "postinstall": "prisma generate",
-    "prod": "next build && next start -p 4001"
+    "prod": "pnpm install && next build && next start -p 4001"
   },
   "dependencies": {
     "@prisma/client": "^6.2.1",
