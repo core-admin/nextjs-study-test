@@ -16,7 +16,9 @@ export default async function SidebarNoteList() {
         return {
           noteId: note.uuid,
           note,
-          header: <NoteItemHeader title={note.title} updateTime={note.updateTime} />,
+          header: (
+            <NoteItemHeader key={note.updateTime} title={note.title} updateTime={note.updateTime} />
+          ),
         };
       })}
     />
