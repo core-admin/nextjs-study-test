@@ -4,6 +4,7 @@ console.log('node version >>>>>>>>>>>>>>>>>>>>>>>', process.version);
 
 
 const nextConfig = {
+  output: 'standalone',
   experimental: {
     staleTimes: {
       // 在nextjs15中，缓存行为都变为了默认不缓存了，需要自己手动开启

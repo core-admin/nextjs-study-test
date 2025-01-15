@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start -p 4001",
+    "start": "next start",
     "lint": "next lint",
     "db:pull": "prisma db pull",
     "db:push": "prisma db push",
@@ -15,7 +15,7 @@
     "db:migrate:lazy": "prisma migrate dev --create-only",
     "db:migrate:prod": "prisma migrate deploy",
     "postinstall": "prisma generate",
-    "prod": "pnpm install && next build && next start -p 4001"
+    "prod": "pnpm install && next build && next start"
   },
   "dependencies": {
     "@prisma/client": "^6.2.1",
