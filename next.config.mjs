@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
+
+console.log('node version >>>>>>>>>>>>>>>>>>>>>>>', process.version);
+
+
 const nextConfig = {
   experimental: {
     staleTimes: {
