@@ -12,13 +12,26 @@ services:
       - AUTH_SECRET=${AUTH_SECRET}
       - AUTH_GITHUB_ID=${AUTH_GITHUB_ID}
       - AUTH_GITHUB_SECRET=${AUTH_GITHUB_SECRET}
+
+      # - DATABASE_URL=${DATABASE_URL}
+      # DATABASE_URL="mysql://root:root@localhost:3306/notes"
+
       - DATABASE_URL=${DATABASE_URL}
+      # - DATABASE_URL=mysql://root:root@已存在的MySQL容器名:3306/notes
+      # DATABASE_URL="mysql://root:root@mysql9-network:3306/notes"
+
       - AUTH_URL=${AUTH_URL}
       - NODE_ENV=production
     # restart: unless-stopped
     networks:
-      - app-network
+      # - app-network
+      - mysql9-network
+
+# networks:
+#   app-network:
+#     driver: bridge
 
 networks:
-  app-network:
-    driver: bridge
+  existing_network:
+    external: true # 使用外部已存在的网络
+    name: mysql9-network # 可以用 docker network ls 查看
