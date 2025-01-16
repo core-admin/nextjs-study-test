@@ -295,3 +295,42 @@ docker network create [网络名称]
 # 6 将容器连接到新的网络
 docker network connect [网络名称] [容器ID或名称]
 ```
+
+## 网络引用的写法
+
+1. 多个外部网络：
+
+```yaml
+networks:
+  mysql9-network:
+    external: true
+  redis-network:
+    external: true
+  mongo-network:
+    external: true
+```
+
+2. 混合使用外部和内部网络：
+
+```yaml
+networks:
+  mysql9-network: # 外部已存在的网络
+    external: true
+  app-network: # 新建的内部网络
+    driver: bridge
+  cache-network: # 另一个外部网络
+    external: true
+```
+
+然后在服务中使用这些网络：
+
+```yaml
+services:
+  app:
+    networks:
+      - mysql9-network
+      - redis-network
+      - mongo-network # 服务可以同时连接多个网络
+```
+
+这样服务就可以同时访问不同网络中的其他容器。

@@ -18,7 +18,8 @@ services:
 
       - DATABASE_URL=${DATABASE_URL}
       # - DATABASE_URL=mysql://root:root@已存在的MySQL容器名:3306/notes
-      # DATABASE_URL="mysql://root:root@mysql9-network:3306/notes"
+      # - DATABASE_URL=mysql://notes:notes12300@mysql9:3306/notes
+      # 可以在容器中，通过 ping mysql9[容器名] 测试网络是否连接成功
 
       - AUTH_URL=${AUTH_URL}
       - NODE_ENV=production
@@ -32,6 +33,6 @@ services:
 #     driver: bridge
 
 networks:
-  existing_network:
+  mysql9-network: # 直接使用实际网络名
     external: true # 使用外部已存在的网络
-    name: mysql9-network # 可以用 docker network ls 查看
+
