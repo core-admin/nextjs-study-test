@@ -97,8 +97,8 @@ export async function saveNote(prevState, formData) {
     revalidatePath('/', 'layout');
   } else {
     const res = await addNote(JSON.stringify(data));
-    // redirect(`/note/${res}`);
-    revalidatePath('/', 'layout');
+    // revalidatePath('/', 'layout');
+    redirect(`/note/${res}`);
   }
 
   return {
