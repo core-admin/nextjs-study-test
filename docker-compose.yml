@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nextjs-note:latest
+    container_name: nextjs-note
+    ports:
+      - '4001:4001'
+    environment:
+      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_GITHUB_ID=${AUTH_GITHUB_ID}
+      - AUTH_GITHUB_SECRET=${AUTH_GITHUB_SECRET}
+      - DATABASE_URL=${DATABASE_URL}
+      - AUTH_URL=${AUTH_URL}
+      - NODE_ENV=production
+    # restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

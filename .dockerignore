@@ -1,0 +1,34 @@
+logs
+*.log
+npm-debug.log
+yarn-debug.log*
+yarn-error.log*
+
+node_modules
+.eslintcache
+.next
+.git
+out
+dist
+tmp
+temp
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+Dockerfile
+.dockerignore
+
+*.md
+
+.env
+
+# secret key
+*.key
+*.key.pub

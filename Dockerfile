@@ -26,6 +26,14 @@ COPY ./prisma ./
 # 支持多种包管理器（yarn/npm/pnpm）
 # 强制使用锁文件，保证依赖版本一致性
 # 如果没有锁文件则失败，避免潜在问题
+
+# 基础镜像 node:18-alpine 已经包含了这些工具：
+# - yarn - Node.js 官方镜像从 2017 年起就预装了 Yarn
+# - pnpm - 通过 corepack 支持：
+#   - Corepack 是 Node.js 16.13+ 的内置功能
+#   - 它管理包管理器（yarn/pnpm）的版本
+#   - corepack enable pnpm 会自动下载并启用 pnpm
+
 RUN \
   # --frozen-lockfile - 确保安装版本严格匹配锁文件，如有不匹配则报错
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
@@ -36,6 +44,8 @@ RUN \
   # 如果锁文件不存在，则报错并退出
   else echo "Lockfile not found." && exit 1; \
   fi
+
+# 
 
 # ---------------------------------------------
 
@@ -48,6 +58,8 @@ WORKDIR /app
 # 将 deps 阶段中安装的 node_modules 复制到当前构建阶段的 /app 目录下
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# RUN echo "Current directory contents:" && ls -la
 
 # 构建
 RUN \
@@ -79,6 +91,7 @@ RUN mkdir .next
 # 将 .next 目录的所有权给到 nextjs 用户和 nodejs 组
 RUN chown nextjs:nodejs .next
 
+# https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
 # 复制 Next.js 构建产物，同时设置所有权
 # 复制独立运行所需文件
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
@@ -98,3 +111,5 @@ ENV PORT=4001
 CMD ["sh", "-c", "HOSTNAME=\"0.0.0.0\" node server.js"]
 
 
+# run build >>>
+# docker build -t nextjs-note . 2>&1 | tee build.log
